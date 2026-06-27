@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Virtualenvs
+.venv/
+venv/
+
+# Secrets
+.env
+
+# Model artifacts (large; never commit)
+models/*.gguf
+models/*.bin
+models/*.safetensors
+models/adapter/
+outputs/
+*.gguf
+
+# Training/eval byproducts (loss.png is kept: the README displays it)
+loraforge-report/
+eval/reports/
+
+# Local assistant files
+CLAUDE.md
+LEARNING_OUTCOMES.md
+
+# Personal setup notes (private, never commit)
+*.local.md
+SETUP_GUIDE.local.md

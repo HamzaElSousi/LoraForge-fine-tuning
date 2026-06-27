@@ -1,0 +1,8 @@
+# Optional quantitative-eval supplement (eval/eval.py) - ROUGE-L + BERTScore on the
+# held-out test split. The headline eval is EvalKit (LLM-judge); this is extra signal.
+# CPU only. BERTScore pulls a small transformer, so this is a heavier install than serve.
+
+rouge-score>=0.1.2
+bert-score>=0.3.13
+torch>=2.4.0               # required by bert-score; install only if you run eval/eval.py
+httpx>=0.27.0

@@ -1,0 +1,19 @@
+# Brings up the LoRAForge auth proxy. Ollama is expected to run on the host (the stack
+# Hamza already uses); the proxy reaches it via host.docker.internal.
+#
+#   ollama create loraforge-ft -f serve/Modelfile   # one-time, on the host
+#   LORAFORGE_API_KEY=... docker compose up --build
+services:
+  loraforge-serve:
+    build:
+      context: .
+      dockerfile: serve/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      LORAFORGE_API_KEY: ${LORAFORGE_API_KEY:?set LORAFORGE_API_KEY in your shell or .env}
+      LORAFORGE_MODEL: ${LORAFORGE_MODEL:-loraforge-ft}
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434/v1}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped

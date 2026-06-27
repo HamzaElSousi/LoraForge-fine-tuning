@@ -1,0 +1,17 @@
+# Ollama Modelfile for the fine-tuned LoRAForge model.
+#   ollama create loraforge-ft -f serve/Modelfile
+#
+# IMPORTANT: the stop tokens below MUST match the chat template the model was trained on,
+# or generations will run on / degrade (see RESEARCH.md pitfall #1). The base is
+# Qwen3 4B Instruct (2507), which uses the ChatML template and ends turns with <|im_end|>.
+
+FROM ./models/loraforge-qwen3-4b-q4_k_m.gguf
+
+PARAMETER temperature 0.7
+PARAMETER top_p 0.9
+PARAMETER stop "<|im_end|>"
+
+# Keep this in sync with serve/main.py's LORAFORGE_SYSTEM_PROMPT. The FastAPI proxy injects
+# the authoritative system prompt at request time; this SYSTEM line is the fallback for
+# anyone hitting Ollama directly.
+SYSTEM """You are a helpful, concise customer-support assistant. Answer only using information you are confident about. If a question is outside customer support or you do not know, say so plainly instead of guessing."""

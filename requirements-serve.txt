@@ -1,0 +1,12 @@
+# Serving dependencies - CPU only, NO torch. Inference is GGUF via Ollama/llama.cpp.
+# Keeps the serving image tiny (~150 MB) and lets it run on Hamza's laptop.
+
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+httpx>=0.27.0
+pydantic>=2.9.0
+python-dotenv>=1.0.0
+
+# Tests for the serving layer
+pytest>=8.3.0
+respx>=0.21.0              # mock httpx calls to Ollama - no real model in CI
