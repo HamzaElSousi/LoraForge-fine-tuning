@@ -20,13 +20,13 @@ the rest of the series: LoRAForge produces the model, Ollama serves it, EvalKit 
 
 ```mermaid
 flowchart LR
-    A[Bitext dataset] --> B[prepare_dataset.py<br/>messages JSONL, 90/10 split]
-    B --> C[QLoRA fine-tune<br/>Unsloth on T4]
-    C --> D[Merge adapter<br/>into fp16]
-    D --> E[Convert + quantize<br/>GGUF Q4_K_M]
-    E --> F[ollama create<br/>loraforge-ft]
-    F --> G[FastAPI auth proxy<br/>/v1/chat/completions]
-    F --> H[EvalKit<br/>base vs fine-tuned]
+    A["Bitext dataset"] --> B["prepare_dataset.py<br/>messages JSONL, 90/10 split"]
+    B --> C["QLoRA fine-tune<br/>Unsloth on T4"]
+    C --> D["Merge adapter into fp16"]
+    D --> E["Convert and quantize<br/>GGUF Q4_K_M"]
+    E --> F["ollama create<br/>loraforge-ft"]
+    F --> G["FastAPI auth proxy"]
+    F --> H["EvalKit<br/>base vs fine-tuned"]
 ```
 
 The dashed line in the split below marks the one machine boundary: only a single `.gguf`
@@ -34,14 +34,14 @@ crosses from the cloud GPU back to the laptop.
 
 ```mermaid
 flowchart TB
-    subgraph Cloud["Cloud T4 (Kaggle) - notebooks/01-finetune.ipynb"]
-        T[load 4-bit -> LoRA train -> merge -> GGUF Q4_K_M]
+    subgraph Cloud["Cloud GPU, Kaggle T4"]
+        T["01-finetune.ipynb: load 4-bit, LoRA train,<br/>merge, quantize to GGUF Q4_K_M"]
     end
-    subgraph Local["Local CPU (Ollama already installed)"]
-        S[ollama create] --> P[FastAPI proxy] 
-        S --> EV[EvalKit base vs tuned]
+    subgraph Local["Local CPU, Ollama"]
+        S["ollama create"] --> P["FastAPI auth proxy"]
+        S --> EV["EvalKit base vs tuned"]
     end
-    T -. download one .gguf .-> S
+    T -. download one gguf .-> S
 ```
 
 ## Get the model
@@ -143,12 +143,12 @@ cannot override it:
 sequenceDiagram
     participant C as Client
     participant P as FastAPI proxy
-    participant O as Ollama (loraforge-ft)
-    C->>P: POST /v1/chat/completions<br/>(Bearer key, messages)
-    alt missing / wrong key
+    participant O as Ollama loraforge-ft
+    C->>P: POST /v1/chat/completions with Bearer key
+    alt missing or wrong key
         P-->>C: 401 Unauthorized
     else valid key
-        P->>P: drop client system messages,<br/>inject locked system prompt,<br/>force model = loraforge-ft
+        P->>P: drop client system messages, inject locked prompt, force model
         P->>O: proxied request
         O-->>P: completion
         P-->>C: 200 OpenAI-shaped response
