@@ -8,6 +8,8 @@ base versus fine-tuned with **EvalKit**.
 
 Training runs on a free cloud T4 (Kaggle). Everything after training runs locally on CPU.
 
+📦 **Model weights:** [`HamzaElSousi/loraforge-qwen3-4b-gguf`](https://huggingface.co/HamzaElSousi/loraforge-qwen3-4b-gguf) on the Hugging Face Hub (the 2.5 GB GGUF is not in this repo). See [Get the model](#get-the-model).
+
 ## Why this exists
 
 It is the project that proves training and adapting a model, not just calling an API. The
