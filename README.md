@@ -1,5 +1,9 @@
 # LoRAForge
 
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Model on HF](https://img.shields.io/badge/%F0%9F%A4%97%20Hub-loraforge--qwen3--4b--gguf-yellow)](https://huggingface.co/HamzaElSousi/loraforge-qwen3-4b-gguf)
+
 Fine-tune an open LLM on a domain, quantize it to GGUF, and serve it as a self-hosted,
 OpenAI-compatible API. LoRAForge takes **Qwen3 4B Instruct**, QLoRA fine-tunes it on the
 **Bitext customer-support** dataset with Unsloth, quantizes the result to a single
